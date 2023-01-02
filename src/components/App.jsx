@@ -1,42 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Section from './Section';
 import ContactForm from './ContactForm';
 import FilterByName from './Filter';
 import ContactList from './ContactList';
-import { nanoid } from 'nanoid';
+import { addContact } from 'redux/contacts/contactsSlice';
+import { getContacts } from 'redux/contacts/contacts-selectors';
+import { deleteContact } from 'redux/contacts/contactsSlice';
+import { getFilter } from 'redux/filter/filter-selectors';
+import { filterValue } from 'redux/filter/filterSlice';
 
 const App = () => {
-  const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(() => {
-    const localStorageContacts = localStorage.getItem('contacts');
-    const contactsParsed = JSON.parse(localStorageContacts);
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
 
-    if (localStorageContacts) {
-      return contactsParsed;
-    } else {
-      return [];
-    }
-  });
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  const addContact = data => {
-    const id = nanoid();
-    const newContact = { ...data, id };
-
-    contacts.find(contact => contact.name === data.name)
-      ? alert(`${data.name} is already in contacts`)
-      : setContacts([...contacts, newContact]);
+  const addContacts = contact => {
+    contacts.find(({ name }) => name === contact.name)
+      ? alert(`${contact.name} is already in contacts`)
+      : dispatch(addContact(contact));
   };
 
-  const deleteContact = contactId => {
-    setContacts(contacts.filter(contact => contact.id !== contactId));
+  const deleteContacts = contactId => {
+    dispatch(deleteContact(contactId));
   };
 
-  const filterValue = e => {
-    setFilter(e.currentTarget.value);
+  const getFilterValue = ({ target: { value } }) => {
+    dispatch(filterValue(value));
   };
 
   const filterContactsByName = () => {
@@ -47,22 +36,21 @@ const App = () => {
     );
   };
 
-  const contactsByName = filterContactsByName();
   return (
     <>
       <Section title="Phonebook" border="false">
-        <ContactForm addContact={addContact} />
+        <ContactForm addContacts={addContacts} />
       </Section>
       <Section title="Contacts" border="true">
         {contacts.length === 0 ? (
           <p>Sorry your contact list is empty. Add someone.</p>
         ) : (
-          <FilterByName value={filter} onChange={filterValue} />
+          <FilterByName value={filter} onChange={getFilterValue} />
         )}
 
         <ContactList
-          contacts={contactsByName}
-          onDeleteContact={deleteContact}
+          contacts={filterContactsByName()}
+          onDeleteContact={deleteContacts}
         />
       </Section>
     </>
