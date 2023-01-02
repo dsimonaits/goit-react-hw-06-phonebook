@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import { Form } from './ContactForm.styled';
 import { Label } from './ContactForm.styled';
 import { Btn } from './ContactForm.styled';
+import { nanoid } from 'nanoid';
 
-const ContactForm = ({ addContact }) => {
+const ContactForm = ({ addContacts }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleChange = e => {
-    const input = e.target.name;
-
-    switch (input) {
+  const handleChange = ({ target: { name, value } }) => {
+    switch (name) {
       case 'name':
-        setName(e.target.value);
+        setName(value);
         break;
       case 'number':
-        setNumber(e.target.value);
+        setNumber(value);
         break;
 
       default:
@@ -26,7 +25,8 @@ const ContactForm = ({ addContact }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    addContact({ name, number });
+    const contact = { name, number, id: nanoid() };
+    addContacts(contact);
     resetForm();
   };
 
@@ -72,5 +72,5 @@ const ContactForm = ({ addContact }) => {
 export default ContactForm;
 
 ContactForm.propTypes = {
-  addContact: PropTypes.func.isRequired,
+  addContacts: PropTypes.func.isRequired,
 };
