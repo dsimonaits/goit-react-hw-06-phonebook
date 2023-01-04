@@ -3,11 +3,12 @@ import Section from './Section';
 import ContactForm from './ContactForm';
 import FilterByName from './Filter';
 import ContactList from './ContactList';
-import { addContact } from 'redux/contacts/contactsSlice';
-import { getContacts } from 'redux/contacts/contacts-selectors';
-import { deleteContact } from 'redux/contacts/contactsSlice';
-import { getFilter } from 'redux/filter/filter-selectors';
-import { filterValue } from 'redux/filter/filterSlice';
+import { getContacts, getFilter } from 'redux/contacts/contacts-selectors';
+import {
+  deleteContact,
+  addContact,
+  filterValue,
+} from 'redux/contacts/contactsSlice';
 
 const App = () => {
   const contacts = useSelector(getContacts);
