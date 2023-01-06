@@ -10,7 +10,6 @@ const ContactList = () => {
 
   const filterContactsByName = () => {
     const normalizedFilter = filter.toLowerCase();
-
     return contacts.filter(contact =>
       contact.name.toLocaleLowerCase().includes(normalizedFilter)
     );
