@@ -4,7 +4,7 @@ Contact book Refactor the "Contact Book" application code by adding state
 control using the [Redux Toolkit] library (https://redux-toolkit.js.org/). Let
 the Redux state look like this.
 
-``hell { contacts: [], filter: "" }
+ { contacts: [], filter: "" }
 
 - Create a repository with `configureStore()`
 - Use `createSlice()`
