@@ -5,7 +5,7 @@ import { getContacts } from 'redux/selectors';
 import { Form } from './ContactForm.styled';
 import { Label } from './ContactForm.styled';
 import { Btn } from './ContactForm.styled';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -26,7 +26,7 @@ const ContactForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const contact = { name, number, id: nanoid() };
+    const contact = { name, number };
     handleAdd(contact);
     resetForm();
   };
