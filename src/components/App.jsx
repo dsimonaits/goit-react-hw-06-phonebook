@@ -1,57 +1,26 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Section from './Section';
 import ContactForm from './ContactForm';
 import FilterByName from './Filter';
 import ContactList from './ContactList';
-import { addContact } from 'redux/contacts/contactsSlice';
-import { getContacts } from 'redux/contacts/contacts-selectors';
-import { deleteContact } from 'redux/contacts/contactsSlice';
-import { getFilter } from 'redux/filter/filter-selectors';
-import { filterValue } from 'redux/filter/filterSlice';
+import { getContacts } from 'redux/selectors';
 
 const App = () => {
   const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
-  const dispatch = useDispatch();
-
-  const addContacts = contact => {
-    contacts.find(({ name }) => name === contact.name)
-      ? alert(`${contact.name} is already in contacts`)
-      : dispatch(addContact(contact));
-  };
-
-  const deleteContacts = contactId => {
-    dispatch(deleteContact(contactId));
-  };
-
-  const getFilterValue = ({ target: { value } }) => {
-    dispatch(filterValue(value));
-  };
-
-  const filterContactsByName = () => {
-    const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter(contact =>
-      contact.name.toLocaleLowerCase().includes(normalizedFilter)
-    );
-  };
 
   return (
     <>
       <Section title="Phonebook" border="false">
-        <ContactForm addContacts={addContacts} />
+        <ContactForm />
       </Section>
       <Section title="Contacts" border="true">
         {contacts.length === 0 ? (
           <p>Sorry your contact list is empty. Add someone.</p>
         ) : (
-          <FilterByName value={filter} onChange={getFilterValue} />
+          <FilterByName />
         )}
 
-        <ContactList
-          contacts={filterContactsByName()}
-          onDeleteContact={deleteContacts}
-        />
+        <ContactList />
       </Section>
     </>
   );
