@@ -1,16 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { filterValue } from 'redux/filterSlice';
-import { getFilter } from 'redux/selectors';
+import { getFilter, getContacts } from 'redux/selectors';
 import { Label } from './Filter.styled';
 
 const FilterByName = () => {
   const dispatch = useDispatch();
   const filter = useSelector(getFilter);
+  const contacts = useSelector(getContacts);
 
   const setFilterValue = ({ target: { value } }) => {
     dispatch(filterValue(value));
   };
-  return (
+  return contacts.length === 0 ? (
+    <p>Sorry your contact list is empty. Add someone.</p>
+  ) : (
     <Label>
       Find contacts by name
       <input
