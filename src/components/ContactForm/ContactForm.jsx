@@ -28,6 +28,7 @@ const ContactForm = () => {
     e.preventDefault();
     const contact = { name, number };
     handleAdd(contact);
+    console.log(e.target.elements.number.value);
     resetForm();
   };
 
